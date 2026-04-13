@@ -23,6 +23,8 @@ spec:
     "spark.driver.extraClassPath": "/opt/spark/jars/*"
     "spark.executor.extraClassPath": "/opt/spark/jars/*"
     "spark.sql.catalogImplementation": "hive"
+    "spark.sql.extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
+
   
   driver:
     cores: 1

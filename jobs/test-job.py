@@ -20,3 +20,4 @@ spark.sql("USE silver")
 spark.sql("SHOW CATALOGS").show()
 
 spark.stop()
+
