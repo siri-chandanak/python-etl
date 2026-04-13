@@ -1,0 +1,39 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: pyspark-job
+  namespace: default
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: siri019/pyspark:v7
+  imagePullPolicy: IfNotPresent
+  mainApplicationFile: local:///opt/spark/jobs/test-job.py
+  sparkVersion: "3.5.3"
+  restartPolicy:
+    type: Never
+
+
+  sparkConf:
+    "spark.plugins": "org.apache.gravitino.spark.connector.plugin.GravitinoSparkPlugin"
+    "spark.sql.gravitino.uri": "http://gravitino:8090"
+    "spark.sql.gravitino.metalake": "dev"
+    "spark.jars": "local:///opt/spark/jars/gravitino-spark-connector-runtime-3.5_2.12-1.2.0.jar"
+    "spark.driver.extraClassPath": "/opt/spark/jars/*"
+    "spark.executor.extraClassPath": "/opt/spark/jars/*"
+    "spark.sql.catalogImplementation": "hive"
+  
+  driver:
+    cores: 1
+    memory: "1g"
+    serviceAccount: default
+    labels:
+      version: 3.5.3
+
+  executor:
+    instances: 1
+    cores: 1
+    memory: "1g"
+    labels:
+      version: 3.5.3
